@@ -36,3 +36,31 @@ export async function DELETE(request){
     
     return NextResponse.json({msg:"Todo Deleted"});
 }
+
+// export async function PUT(request){
+
+//     const mongoId = await request.nextUrl.searchParams.get('mongoId');
+
+//     await TodoModel.findByIdAndUpdate(mongoId, {
+//         $set:{
+//             isCompleted:true
+//         }
+//     });
+    
+//     return NextResponse.json({msg:"Todo Completed"});
+// }
+
+export async function PUT(request) {
+    const mongoId = await request.nextUrl.searchParams.get('mongoId');
+
+    try {
+        await TodoModel.findByIdAndUpdate(mongoId, {
+            isCompleted: true
+        });
+
+        return NextResponse.json({ msg: "Todo Completed" });
+    } catch (error) {
+        console.error(error);
+        return NextResponse.error({ status: 500, body: "Internal Server Error" });
+    }
+}
